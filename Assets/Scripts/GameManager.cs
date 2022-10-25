@@ -5,16 +5,18 @@ using UnityEngine.Tilemaps;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private int turn = 0;
-    [SerializeField] private  GameObject[] tokenPrefabs;
-    [SerializeField] private int width, height;
-    private GameObject[,] tokenArray;
-    void Start()
-    {   
-        tokenArray = new GameObject[width,height];
+    [SerializeField] public static int turn = 0;
+    [SerializeField] public static GameObject[] tokenPrefabs;
+    [SerializeField] public GameObject[] tokenPrefabs_;
+    [SerializeField] public static int width, height;
+    [SerializeField] public static GameObject[,] tokenArray;
+
+
+    private void Start() {
+        tokenPrefabs = tokenPrefabs_;
     }
 
-    public void TileClicked(Tile tile)
+    public static void TileClicked(Tile tile)
     {
         // Get tile position
         Vector3 position = tile.transform.position;
@@ -32,7 +34,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void SpawnPrefab(GameObject prefab, Vector3 position)
+    private static void SpawnPrefab(GameObject prefab, Vector3 position)
     {
         position.z--;
         Instantiate(prefab, position, Quaternion.identity);

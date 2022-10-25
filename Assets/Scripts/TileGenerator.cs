@@ -13,6 +13,9 @@ public class TileGenerator : MonoBehaviour
   void Start()
   {
     GenerateTiles();
+    GameManager.width = width;
+    GameManager.height = height;
+    GameManager.tokenArray = new GameObject[width, height];
   }
 
   public void GenerateTiles()
