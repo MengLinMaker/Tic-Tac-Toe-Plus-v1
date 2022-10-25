@@ -4,12 +4,12 @@ using UnityEngine;
 using UnityEditor;
 
 // Indicate what class this editor is for
-[CustomEditor (typeof (GameManager))]
+[CustomEditor (typeof (TileGenerator))]
 public class MapEditor : Editor
 {
     public override void OnInspectorGUI() {
         base.OnInspectorGUI();  // Draw default stuff
-        GameManager gameManager = target as GameManager;    // Typecast target
-        gameManager.GenerateTiles();    // Run for each frame
+        TileGenerator tileGenerator = target as TileGenerator;    // Typecast target
+        tileGenerator.GenerateTiles();    // Run for each frame
     }
 }
