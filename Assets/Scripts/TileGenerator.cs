@@ -1,6 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+
+using System;
+[Serializable] public class TileEvent : UnityEvent <Tile> { }
+[Serializable] public class FLoatEvent : UnityEvent <float> { }
+
 
 public class TileGenerator : MonoBehaviour
 {
@@ -8,6 +14,7 @@ public class TileGenerator : MonoBehaviour
   [SerializeField] private float tileSize;
   [SerializeField] private int width, height;
   [SerializeField] private Transform camera;
+  public FLoatEvent mouseDownEvent;
 
   
   void Start()
@@ -50,5 +57,10 @@ public class TileGenerator : MonoBehaviour
 
     // Reposition camera to view all tiles
     camera.transform.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -(width + height));
+  }
+
+  public static void OnMouseDown(Tile tile) {
+    //mouseDownEvent.Invoke(tile);
+    mouseDownEvent.Invoke(10.0f);
   }
 }

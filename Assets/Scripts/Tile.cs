@@ -21,6 +21,7 @@ public class Tile : MonoBehaviour
     }
 
     void OnMouseDown() {
-        GameManager.TileClicked(this);
+        //GameManager.TileClicked(this);
+        TileGenerator.OnMouseDown(this);
     }
 }

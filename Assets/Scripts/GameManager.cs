@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,7 +17,10 @@ public class GameManager : MonoBehaviour
         tokenPrefabs = tokenPrefabs_;
     }
 
-    public static void TileClicked(Tile tile)
+    public void PrintFloat(float num) {
+        print(num);
+    }
+    public void TileClicked(Tile tile)
     {
         // Get tile position
         Vector3 position = tile.transform.position;
