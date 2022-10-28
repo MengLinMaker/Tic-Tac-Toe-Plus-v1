@@ -185,6 +185,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseColor: {r: 0.827451, g: 0.7372549, b: 0.5529412, a: 1}
   offsetColor: {r: 0.8901961, g: 0.83137256, b: 0.6784314, a: 1}
+  winColor: {r: 0.7028302, g: 1, b: 0.7280799, a: 1}
   renderer: {fileID: 8190411043564365886}
   highlight: {fileID: 3381434125512342771}
 --- !u!61 &-2695579086273465521

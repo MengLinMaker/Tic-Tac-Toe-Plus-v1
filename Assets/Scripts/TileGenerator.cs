@@ -14,7 +14,7 @@ public class TileGenerator : MonoBehaviour {
   [SerializeField] private Tile tilePrefab;
   [SerializeField] private float tileSize;
   [SerializeField] public int width, height;
-  [SerializeField] private Transform camera;
+  [SerializeField] private Camera camera;
   [SerializeField] public TileEvent mouseDownEvent;
   [SerializeField] public TileGeneratorEvent tileGeneratorEvent;
   private Tile[,] tiles;
@@ -23,6 +23,7 @@ public class TileGenerator : MonoBehaviour {
 
 
   void Start() {
+    tiles = new Tile[width, height];
     GenerateTiles();
     tileGeneratorEvent?.Invoke(this);
   }
@@ -60,12 +61,27 @@ public class TileGenerator : MonoBehaviour {
         tiles[x, y] = tileObject;
       }
     }
+  }
 
-    // Reposition camera to view all tiles
+  private void Update() {
+    CameraTransformation(width, height);
+  }
+
+  private void CameraTransformation(float width, float height) {
     camera.transform.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -(width + height));
+    float orthographicHeight = height * 0.5f / 0.8f;
+    float orthographicWidth = width * Screen.height / Screen.width * 0.5f / 0.8f;
+    camera.orthographicSize = Mathf.Max(orthographicHeight, orthographicWidth);
   }
 
   public void OnMouseDown(Tile tile) {
     mouseDownEvent?.Invoke(tile);
+  }
+
+  public void SetWinColor(GameManager gameManager) {
+    int[,] pos = gameManager.GetWinTokenPos();
+    for (int i = 0; i < pos.GetLength(0); i++) {
+      tiles[pos[i,0], pos[i,1]].SetWinColor();
+    }
   }
 }

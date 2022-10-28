@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine.Events;
 
 
 
-[System.Serializable] public class WinEvent : UnityEvent<GameManager> { }
+[System.Serializable] public class GameManagerEvent : UnityEvent<GameManager> { }
 
 
 
@@ -13,8 +14,12 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private GameObject[] prefabs;
     [SerializeField] private GameObject tokenParent;
     [SerializeField] private int numConsecutiveWin;
+    [SerializeField] private GameManagerEvent winEvent;
+    [SerializeField] private GameManagerEvent gameOverEvent;
     private int playerTurn = 0;
+    private int turns = 0;
     private int[,] winTokenPos;
+    private bool hasWonGame = false;
     private GameObject[,] prefabArray;
     private bool[,,] playerTokenArray;
 
@@ -24,10 +29,20 @@ public class GameManager : MonoBehaviour {
         numConsecutiveWin = Mathf.Clamp(numConsecutiveWin, 3, 6);
     }
 
-  public void InitPrefabArray(TileGenerator tileGenerator) {
+    IEnumerator ExecuteAfterTime(float time, Action func)
+    {
+        yield return new WaitForSeconds(time);
+        func();
+    }
+
+    public void InitPrefabArray(TileGenerator tileGenerator) {
         prefabArray = new GameObject[tileGenerator.width, tileGenerator.height];
         playerTokenArray = new bool[prefabs.Length, tileGenerator.width, tileGenerator.height];
         winTokenPos = new int[numConsecutiveWin,2];
+        foreach (Transform child in tokenParent.transform)
+        {   
+            GameObject.Destroy(child.gameObject);
+        }
     }
 
     public void TileClicked(Tile tile) {
@@ -35,14 +50,26 @@ public class GameManager : MonoBehaviour {
         Vector3 position = tile.transform.position;
 
         if (NoPrefabAtPos((int) position.x, (int) position.y) == true) {
-            SpawnPrefabAtPos(prefabs[playerTurn], position);
-            print(CheckWinCondition((int)position.x, (int)position.y, numConsecutiveWin));
+            if (hasWonGame == false) { SpawnPrefabAtPos(prefabs[playerTurn], position); }
+            if (CheckWinCondition((int)position.x, (int)position.y, numConsecutiveWin) == true) {
+                hasWonGame = true;
+                winEvent?.Invoke(this);
+                StartCoroutine(ExecuteAfterTime(1f, () => gameOverEvent?.Invoke(this) ));
+            }
+            CheckFullBoard();
             NextPlayerTurn();
         }
     }
 
     private bool NoPrefabAtPos(int posX, int posY) {
         return prefabArray[posX, posY] == null;
+    }
+
+    private void CheckFullBoard() {
+        turns++;
+        if (turns == playerTokenArray.GetLength(1) * playerTokenArray.GetLength(2)) {
+            StartCoroutine(ExecuteAfterTime(1f, () => gameOverEvent?.Invoke(this)));
+        };
     }
 
     private void NextPlayerTurn() {
@@ -68,7 +95,7 @@ public class GameManager : MonoBehaviour {
         int maxPosX = Mathf.Min(posX + (numConsecutive - 1), playerTokenArray.GetLength(1)-1);
         for (int x = minPosX; x <= maxPosX; x++) {
             winTokenPos[consecutive, 0] = x;
-            winTokenPos[consecutive, 0] = posY;
+            winTokenPos[consecutive, 1] = posY;
             consecutive = playerTokenArray[playerTurn, x, posY] ? ++consecutive : 0;
             if (consecutive == numConsecutive) {return true;}
         }
@@ -79,7 +106,7 @@ public class GameManager : MonoBehaviour {
         int maxPosY = Mathf.Min(posY + (numConsecutive - 1), playerTokenArray.GetLength(2) - 1);
         for (int y = minPosY; y <= maxPosY; y++) {
             winTokenPos[consecutive, 0] = posX;
-            winTokenPos[consecutive, 0] = y;
+            winTokenPos[consecutive, 1] = y;
             consecutive = playerTokenArray[playerTurn, posX, y] ? ++consecutive : 0;
             if (consecutive == numConsecutive) {return true;}     
         }
@@ -90,7 +117,7 @@ public class GameManager : MonoBehaviour {
         int maxPosDiag = Mathf.Min(maxPosX-posX, maxPosY-posY);
         for (int i = minPosDiag; i <= maxPosDiag; i++) {
             winTokenPos[consecutive, 0] = posX + i;
-            winTokenPos[consecutive, 0] = posY + i;
+            winTokenPos[consecutive, 1] = posY + i;
             consecutive = playerTokenArray[playerTurn, posX + i, posY + i] ? ++consecutive : 0;
             if (consecutive == numConsecutive) {return true;}
         }
@@ -101,7 +128,7 @@ public class GameManager : MonoBehaviour {
         int maxNegDiag = Mathf.Min(maxPosX-posX, posY-minPosY);
         for (int i = minNegDiag; i <= maxNegDiag; i++) {
             winTokenPos[consecutive, 0] = posX + i;
-            winTokenPos[consecutive, 0] = posY - i;
+            winTokenPos[consecutive, 1] = posY - i;
             consecutive = playerTokenArray[playerTurn, posX + i, posY - i] ? ++consecutive : 0;
             if (consecutive == numConsecutive) {return true;}
         }

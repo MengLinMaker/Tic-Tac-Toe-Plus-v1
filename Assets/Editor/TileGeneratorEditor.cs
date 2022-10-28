@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-// Indicate what class this editor is for
+/* // Indicate what class this editor is for
 [CustomEditor (typeof (TileGenerator))]
 public class TileGeneratorEditor : Editor {
     public override void OnInspectorGUI() {
@@ -11,4 +11,4 @@ public class TileGeneratorEditor : Editor {
         TileGenerator tileGenerator = target as TileGenerator;    // Typecast target
         tileGenerator.GenerateTiles();    // Run for each frame
     }
-}
+} */
