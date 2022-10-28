@@ -1,47 +1,52 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
-using System;
+
+
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] public static int turn = 0;
-    [SerializeField] public static GameObject[] tokenPrefabs;
-    [SerializeField] public GameObject[] tokenPrefabs_;
-    [SerializeField] public static int width, height;
-    [SerializeField] public static GameObject[,] tokenArray;
+    [SerializeField] private GameObject[] prefabs;
+
+    [SerializeField] private GameObject tokenParent;
+    private int turn = 0;
+    private GameObject[,] prefabArray;
 
 
-    private void Start() {
-        tokenPrefabs = tokenPrefabs_;
+
+    public void InitPrefabArray(TileGenerator tileGenerator) {
+        prefabArray = new GameObject[tileGenerator.width, tileGenerator.height];
     }
 
-    public void PrintFloat(float num) {
-        print(num);
-    }
     public void TileClicked(Tile tile)
     {
         // Get tile position
         Vector3 position = tile.transform.position;
 
-        if (tokenArray[(int) position.x, (int) position.y] == null) {
+        if (prefabIsNullAtPos(position.x, position.y)) {
             // Calculating turn of player
-            int playerTurn = turn%tokenPrefabs.Length;
+            int playerTurn = turn%prefabs.Length;
             turn++;
             
             // Selecting prefab to spawn
-            GameObject prefab = tokenPrefabs[playerTurn];
+            GameObject prefab = prefabs[playerTurn];
             SpawnPrefab(prefab, position);
-            tokenArray[(int) position.x, (int) position.y] = prefab;
-            print(tokenArray);
+            prefabArray[(int) position.x, (int) position.y] = prefab;
         }
     }
+    private void SetprefabAtPos(float posX, float posY, GameObject prefab) {
+        prefabArray[(int) posX, (int) posY] = prefab;
+    }
 
-    private static void SpawnPrefab(GameObject prefab, Vector3 position)
+    private bool prefabIsNullAtPos(float posX, float posY) {
+        return prefabArray[(int) posX, (int) posY] == null;
+    }
+
+    private void SpawnPrefab(GameObject prefab, Vector3 position)
     {
         position.z--;
-        Instantiate(prefab, position, Quaternion.identity);
+        GameObject gameObject = Instantiate(prefab, position, Quaternion.identity);
+        gameObject.transform.parent = tokenParent.transform;
     }
 
     /**

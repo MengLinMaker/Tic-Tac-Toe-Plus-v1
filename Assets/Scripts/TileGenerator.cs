@@ -3,26 +3,37 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-using System;
-[Serializable] public class TileEvent : UnityEvent <Tile> { }
-[Serializable] public class FLoatEvent : UnityEvent <float> { }
+
+
+[System.Serializable] public class TileEvent : UnityEvent<Tile> {}
+[System.Serializable] public class TileGeneratorEvent : UnityEvent<TileGenerator> { }
+
 
 
 public class TileGenerator : MonoBehaviour
 {
   [SerializeField] private Tile tilePrefab;
   [SerializeField] private float tileSize;
-  [SerializeField] private int width, height;
+  [SerializeField] public int width, height;
   [SerializeField] private Transform camera;
-  public FLoatEvent mouseDownEvent;
+  [SerializeField] public TileEvent mouseDownEvent;
+  [SerializeField] public TileGeneratorEvent tileGeneratorEvent;
 
-  
+
+
+
   void Start()
   {
     GenerateTiles();
-    GameManager.width = width;
-    GameManager.height = height;
-    GameManager.tokenArray = new GameObject[width, height];
+    tileGeneratorEvent?.Invoke(this);
+  }
+
+  // Limit inspector inputs
+  [ExecuteInEditMode] private void OnValidate()
+  {
+    width = (width < 3) ? 3 : width;
+    height = (height < 3) ? 3 : height;
+    tileSize = Mathf.Clamp(tileSize,0.5f,1f);
   }
 
   public void GenerateTiles()
@@ -59,8 +70,7 @@ public class TileGenerator : MonoBehaviour
     camera.transform.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -(width + height));
   }
 
-  public static void OnMouseDown(Tile tile) {
-    //mouseDownEvent.Invoke(tile);
-    mouseDownEvent.Invoke(10.0f);
+  public void OnMouseDown(Tile tile) {
+    mouseDownEvent?.Invoke(tile);
   }
 }

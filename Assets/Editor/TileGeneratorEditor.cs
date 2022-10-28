@@ -5,7 +5,7 @@ using UnityEditor;
 
 // Indicate what class this editor is for
 [CustomEditor (typeof (TileGenerator))]
-public class MapEditor : Editor
+public class TileGeneratorEditor : Editor
 {
     public override void OnInspectorGUI() {
         base.OnInspectorGUI();  // Draw default stuff
