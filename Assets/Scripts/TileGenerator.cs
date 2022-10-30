@@ -23,6 +23,8 @@ public class TileGenerator : MonoBehaviour {
 
 
   void Start() {
+    height = PlayerPrefs.GetInt("height", 3);
+    width = PlayerPrefs.GetInt("width", 3);
     tiles = new Tile[width, height];
     GenerateTiles();
     tileGeneratorEvent?.Invoke(this);

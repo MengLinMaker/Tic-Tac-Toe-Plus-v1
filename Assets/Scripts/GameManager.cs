@@ -35,9 +35,12 @@ public class GameManager : MonoBehaviour {
         func();
     }
 
-    public void InitPrefabArray(TileGenerator tileGenerator) {
-        prefabArray = new GameObject[tileGenerator.width, tileGenerator.height];
-        playerTokenArray = new bool[prefabs.Length, tileGenerator.width, tileGenerator.height];
+    private void Start() {
+        int height = PlayerPrefs.GetInt("height", 3);
+        int width = PlayerPrefs.GetInt("width", 3);
+        numConsecutiveWin = PlayerPrefs.GetInt("numConsecutive", 3);
+        prefabArray = new GameObject[width, height];
+        playerTokenArray = new bool[prefabs.Length, width, height];
         winTokenPos = new int[numConsecutiveWin,2];
         foreach (Transform child in tokenParent.transform)
         {   
