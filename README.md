@@ -44,13 +44,23 @@ The algorithm is designed to take advantage of certain constraints.
 4. From each ray, count number of consecutive tokens.
 5. If number of consecutive tokens > n, then the player wins.
 
+## Possible Improvements
+By initialising an array, the game cannot adapt to dynamic board size changes.
+
+One possible solution is to use a node with 8 pointers for each direction.
+This enables direct extraction of the 'star-arranged' of values, for checking the win condition.
+
+Another approach is to use a hash table. The challenge is finding a data structure that works for other algorithms too.
+For example, you migh want to add attacking abilities.
+
 
 
 ## Motivation
 I had a friend who created a physical card game that incorporated Tic-Tac-Toe rules.
-Now I've never learnt Unity before, so why not take this opportunity to develop the game for him.
+Now I've never learnt Unity before, so why not take this opportunity to develop a digital game for him.
+The algorithm shown here is probably overkill for the game.
+However, this serves as one of the key components to the game.
 
-The algorithms shown here are overkill for the game. However, this serves as one of the key components to the game.
 Please excuse the not so pleasant UI/UX and simplicity... I'm just learning Unity :)
 
 Ciao. Have fun!
