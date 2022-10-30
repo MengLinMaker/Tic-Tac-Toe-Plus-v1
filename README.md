@@ -39,7 +39,7 @@ The algorithm is designed to take advantage of certain constraints.
 * n: number of consecutive tokens to win
 
 **Algorithm**
-1. Setup boolean playerLocationMatrix of size p*w*h. Initialised to false.
+1. Setup boolean playerLocationMatrix of size p * w * h. Initialised to false.
 2. For each token placed, update playerLocationMatrix and check win condition for that player.
 3. Collect location data from horizontal, vertical and diagonal ray of size n or under.
 4. From each ray, count number of consecutive tokens.
