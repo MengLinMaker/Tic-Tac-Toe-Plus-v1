@@ -1425,6 +1425,8 @@ MonoBehaviour:
   prefabs:
   - {fileID: 9053128782600756198, guid: 751972bfcd7856ffdb78400f22ff8561, type: 3}
   - {fileID: 320774915038847135, guid: a246e9529de7dc920b50d7e2c49c9a3d, type: 3}
+  - {fileID: 8964173954081730658, guid: 59b158516cb70e94390b96be32f5ecf2, type: 3}
+  - {fileID: 3534803872834325735, guid: 03d596d058f8c38499d0165d34813fa5, type: 3}
   tokenParent: {fileID: 2113482216}
   numConsecutiveWin: 3
   winEvent:

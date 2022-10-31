@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private GameManagerEvent gameOverEvent;
     private int playerTurn = 0;
     private int turns = 0;
+    private int numPlayers;
     private int[,] winTokenPos;
     private bool hasWonGame = false;
     private GameObject[,] prefabArray;
@@ -39,8 +40,10 @@ public class GameManager : MonoBehaviour {
         int height = PlayerPrefs.GetInt("height", 3);
         int width = PlayerPrefs.GetInt("width", 3);
         numConsecutiveWin = PlayerPrefs.GetInt("numConsecutive", 3);
+        numPlayers = PlayerPrefs.GetInt("numPlayers", 2);
+
         prefabArray = new GameObject[width, height];
-        playerTokenArray = new bool[prefabs.Length, width, height];
+        playerTokenArray = new bool[numPlayers, width, height];
         winTokenPos = new int[numConsecutiveWin,2];
         foreach (Transform child in tokenParent.transform)
         {   
@@ -77,7 +80,7 @@ public class GameManager : MonoBehaviour {
 
     private void NextPlayerTurn() {
         playerTurn++;
-        playerTurn = playerTurn % prefabs.Length;
+        playerTurn = playerTurn % numPlayers;
     }
 
     private void SpawnPrefabAtPos(GameObject prefab, Vector3 position) {
