@@ -3,9 +3,15 @@
 <p align="center"> Change the board size and win condition. </p>
 <p align="center"> Alter to your liking. </p>
 
-<h1 align="center">
+<h3 align="center">
  <a href="https://menglinmaker.itch.io/tic-tac-toe-plus">
- :point_right: Play Here :point_left:
+ :point_right: Play Online :point_left:
+ </a>
+</h1>
+
+<h3 align="center">
+ <a href="https://play.google.com/store/apps/details?id=com.MenglinMaker.TicTacToe">
+ :point_right: Download on Google Play :point_left:
  </a>
 </h1>
 
@@ -14,6 +20,8 @@
     <img width="500px" src="https://user-images.githubusercontent.com/39476147/198872292-b4db6411-2a7a-4c2b-bfc2-c47d2f63540b.gif">
   </a>
 </div>
+
+
 
 <div flex align="center">
 <img alt="GitHub" src="https://img.shields.io/github/license/menglinmaker/Tic-Tac-Toe-Plus-v1?style=flat-square">
